@@ -12,6 +12,11 @@ import WashItem from "./_components/wash-item"
 
 const Home = async () => {
   const wash = await db.wash.findMany({})
+  const popularWash = await db.wash.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  })
 
   return (
     <div>
@@ -24,6 +29,43 @@ const Home = async () => {
           <Input placeholder="Faça sua busca..." />
           <Button>
             <SearchIcon />
+          </Button>
+        </div>
+
+        <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          <Button className="gap-2" variant="secondary">
+            <Image src="/hatchback.png" width={16} height={16} alt="Lavação" />
+            Lavação
+          </Button>
+
+          <Button className="gap-2" variant="secondary">
+            <Image
+              src="/hatchback.png"
+              width={16}
+              height={16}
+              alt="Higienização"
+            />
+            Higienização
+          </Button>
+
+          <Button className="gap-2" variant="secondary">
+            <Image
+              src="/hatchback.png"
+              width={16}
+              height={16}
+              alt="Polimentos"
+            />
+            Polimentos
+          </Button>
+
+          <Button className="gap-2" variant="secondary">
+            <Image
+              src="/hatchback.png"
+              width={16}
+              height={16}
+              alt="Vitrificação"
+            />
+            Vitrificação
           </Button>
         </div>
 
@@ -71,7 +113,27 @@ const Home = async () => {
             <WashItem key={wash.id} wash={wash} />
           ))}
         </div>
+
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Populares
+        </h2>
+
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {popularWash.map((wash) => (
+            <WashItem key={wash.id} wash={wash} />
+          ))}
+        </div>
       </div>
+
+      <footer>
+        <Card>
+          <CardContent className="px-5 py-6">
+            <p className="text-sm text-gray-400">
+              © 2023 Copyright <span className="font-bold">goWash</span>
+            </p>
+          </CardContent>
+        </Card>
+      </footer>
     </div>
   )
 }
