@@ -7,8 +7,12 @@ import { Card, CardContent } from "./_components/ui/card"
 import { Badge } from "./_components/ui/badge"
 import { Avatar } from "./_components/ui/avatar"
 import { AvatarImage } from "@radix-ui/react-avatar"
+import { db } from "./_lib/prisma"
+import WashItem from "./_components/wash-item"
 
-const Home = () => {
+const Home = async () => {
+  const wash = await db.wash.findMany({})
+
   return (
     <div>
       <Header />
@@ -23,7 +27,7 @@ const Home = () => {
           </Button>
         </div>
 
-        <div className="relative h-[170px] w-full">
+        <div className="relative mt-6 h-[150px] w-full">
           <Image
             alt="Agende nos melhores com goWash"
             src="/Banner.png"
@@ -32,7 +36,11 @@ const Home = () => {
           />
         </div>
 
-        <Card className="mt-6">
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Agendamentos
+        </h2>
+
+        <Card>
           <CardContent className="flex justify-between p-0">
             <div className="flex flex-col gap-2 py-5 pl-5">
               <Badge className="w-fit">Confirmado</Badge>
@@ -53,6 +61,16 @@ const Home = () => {
             </div>
           </CardContent>
         </Card>
+
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Recomendados
+        </h2>
+
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {wash.map((wash) => (
+            <WashItem key={wash.id} wash={wash} />
+          ))}
+        </div>
       </div>
     </div>
   )
